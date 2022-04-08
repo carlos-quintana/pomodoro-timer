@@ -130,6 +130,12 @@ function submitWord(word: Array<string>): void {
 }
 
 function handleLetterDeletion(): void {
+    console.log("The delete button was pressed")
+    if (wordGuesses.length < MAX_GUESSES && currentGuess.length > 0) {
+        const targetCard = document.querySelector(`[row='${wordGuesses.length}'][col='${currentGuess.length - 1}']`);
+        targetCard.innerHTML = "";
+        currentGuess.pop();
+    }
 }
 
 generateGameBoard(MAX_GUESSES, WORD_LENGTH);
