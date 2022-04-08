@@ -1,2 +1,2 @@
-# pomodoro-timer
-Organize your workflow and manage your time with the pomodoro technique.
+# wodle-game
+Clone of the popular wordle game, guess the five-letter word in six attempts or less.
