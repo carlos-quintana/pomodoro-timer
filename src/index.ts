@@ -107,6 +107,26 @@ function handleKeyPressed(letter: string): void {
 }
 
 function handleWordSubmission(): void {
+    console.log("The submit button was pressed")
+    if (currentGuess.length === WORD_LENGTH) {
+        console.log("The submitted word length is valid, checking");
+        if (isWordValid(currentGuess)) {
+            console.log("The word is valid, submitting");
+            submitWord(currentGuess);
+        } else
+            console.log("The word is invalid, ignoring");
+    } else
+        console.log("The submitted word length is not valid")
+
+}
+
+function isWordValid(word: Array<string>): boolean {
+    return true;
+}
+
+function submitWord(word: Array<string>): void {
+    wordGuesses.push(word);
+    currentGuess = [];
 }
 
 function handleLetterDeletion(): void {
