@@ -70,6 +70,32 @@ function generateKeyboard(keyboardLayout: Array<string>): void {
     }
 }
 
+function assignButtonHandlers(): void {
+    console.log("Assigning the handlers to the keyboard keys");
+    const keys = document.querySelectorAll(".key");
+    for (let key of keys) {
+        let keyElement = key as HTMLElement;
+        keyElement.onclick = () => handleKeyPressed(keyElement.getAttribute("key"));
+    }
+
+    console.log("Assigning the handler to the submit button");
+    const submitButton: HTMLElement = document.querySelector("#submitButton");
+    console.log(submitButton)
+    submitButton.onclick = () => handleWordSubmission();
+
+    console.log("Assigning the handler to the delete button");
+    const deleteButton: HTMLElement = document.querySelector("#deleteButton");
+    deleteButton.onclick = () => handleLetterDeletion();
+}
+
+function handleKeyPressed(letter: string): void {
+}
+
+function handleWordSubmission(): void {
+}
+
+function handleLetterDeletion(): void {
+}
 
 generateGameBoard(MAX_GUESSES, WORD_LENGTH);
 generateKeyboard(ENGLISH_QWERTY_LAYOUT);
