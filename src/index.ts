@@ -89,6 +89,21 @@ function assignButtonHandlers(): void {
 }
 
 function handleKeyPressed(letter: string): void {
+    console.log(`${letter} was pressed`);
+    console.log("Current guess is", currentGuess, " with a length of ", currentGuess.length);
+    console.log("Current word guesses is", wordGuesses, " with a length of ", wordGuesses.length);
+
+    if (currentGuess.length < WORD_LENGTH && wordGuesses.length < MAX_GUESSES) {
+        console.log("Letter submission is valid, inserting");
+        currentGuess.push(letter);
+        const targetCard = document.querySelector(`[row='${wordGuesses.length}'][col='${currentGuess.length - 1}']`);
+        targetCard.innerHTML = `<span>${letter}</span>`
+
+    } else
+        console.log("Letter submission is not valid, ignoring");
+
+    console.log("Current guess is now", currentGuess, " with a length of ", currentGuess.length);
+
 }
 
 function handleWordSubmission(): void {
