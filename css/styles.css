@@ -1,0 +1,37 @@
+body {
+    font-family: sans-serif;
+
+    display: flex;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 800px);
+}
+
+#title {
+    font-size: 4rem;
+}
+.row-container {
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    border: black 1px solid;
+    width: 2rem;
+    height: 2rem;
+    padding: 3px;
+    margin: 5px;
+}
+
+.card span {
+    font-size: 2rem;
+}
+
+button {
+    font-size: 1.5rem;
+}
