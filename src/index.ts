@@ -3,6 +3,7 @@ const MAX_GUESSES: number = 6;
 const WORD_LENGTH: number = 5;
 const wordGuesses: string[][] = [];
 let currentGuess: Array<string> = [];
+let gameFinishedFlag: boolean = false;
 
 const ENGLISH_QWERTY_LAYOUT: Array<string> = [
     "qwertyuiop",
@@ -80,7 +81,6 @@ function assignButtonHandlers(): void {
 
     console.log("Assigning the handler to the submit button");
     const submitButton: HTMLElement = document.querySelector("#submitButton");
-    console.log(submitButton)
     submitButton.onclick = () => handleWordSubmission();
 
     console.log("Assigning the handler to the delete button");
@@ -89,6 +89,10 @@ function assignButtonHandlers(): void {
 }
 
 function handleKeyPressed(letter: string): void {
+
+    // If the game has finished do not allow more attempts
+    if (gameFinishedFlag) return;
+
     console.log(`${letter} was pressed`);
     console.log("Current guess is", currentGuess, " with a length of ", currentGuess.length);
     console.log("Current word guesses is", wordGuesses, " with a length of ", wordGuesses.length);
@@ -108,15 +112,22 @@ function handleKeyPressed(letter: string): void {
 
 function handleWordSubmission(): void {
     console.log("The submit button was pressed")
-    if (currentGuess.length === WORD_LENGTH) {
+    if (gameFinishedFlag || wordGuesses.length >= MAX_GUESSES) {
+        alert("The game has ended")
+        return
+    }
+    if (currentGuess.length !== WORD_LENGTH) {
+        alert("The submitted word length is not valid");
+        console.log("The submitted word length is not valid");
+        return;
+    }
+
         console.log("The submitted word length is valid, checking");
         if (isWordValid(currentGuess)) {
             console.log("The word is valid, submitting");
             submitWord(currentGuess);
         } else
-            console.log("The word is invalid, ignoring");
-    } else
-        console.log("The submitted word length is not valid")
+        console.log("The word is in valid, ignoring");
 
 }
 
@@ -125,8 +136,48 @@ function isWordValid(word: Array<string>): boolean {
 }
 
 function submitWord(word: Array<string>): void {
+    checkSubmittedWord();
     wordGuesses.push(word);
     currentGuess = [];
+}
+
+function checkSubmittedWord(): void {
+    console.log("Checking submitted word");
+
+    // Color the current row accordingly 
+    // Get the row where the word is submitted from
+    const rows = document.querySelectorAll("#board .row-container");
+    const currentRow = rows[wordGuesses.length];
+    // Color the current row
+    (<HTMLElement>currentRow).style.backgroundColor = "red";
+
+    // Analyze letter by letter and color each card accordingly
+    const cards = [...currentRow.children];
+    for (let card of cards) {
+        // Get the index of the card
+        const currentIndex = Number((<HTMLElement>card).getAttribute("col"));
+        // Get the letter in the card
+        const currentLetter: string = (<HTMLElement>card.children[0]).innerText;
+
+        // Set the color of the card to an initial value
+        let finalCardColor: string = "gray";
+        // If the original word contains this letter
+        console.log(`Comparing the letter ${currentLetter} to the word to guess "${wordToGuess}"`);
+        const letterPosition: number = wordToGuess.toLowerCase().indexOf(currentLetter.toLowerCase());
+        if (letterPosition > -1) {
+            finalCardColor = "yellow";
+            // If the original word contains this letter in the same position
+            if (letterPosition === currentIndex)
+                finalCardColor = "green"
+        }
+        (<HTMLElement>card).style.backgroundColor = finalCardColor;
+    }
+
+    // Check if the guess is correct and then end the game 
+    if (currentGuess.reduce((a, b) => a + b).toLowerCase() === wordToGuess.toLowerCase()) {
+        gameFinishedFlag = true;
+        alert("You've won the game");
+    }
 }
 
 function handleLetterDeletion(): void {
