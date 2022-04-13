@@ -242,3 +242,23 @@ generateGameBoard(MAX_GUESSES, WORD_LENGTH);
 generateKeyboard(ENGLISH_QWERTY_LAYOUT);
 assignButtonHandlers();
 wordToGuess = getWordToGuess();
+
+/*
+ * HANDLE KEYBOARD INPUTS
+ */
+document.addEventListener('keydown', (event) => {
+    let keyName:string = event.key.toLowerCase();
+    console.log("A key was pressed",event)
+    if (keyName.match(/[a-z]/) && keyName.length === 1) {
+        console.log("It's a letter")
+        handleKeyPressed(keyName.toUpperCase());
+    }
+    if (keyName === "enter") {
+        console.log("It's Enter")
+        handleWordSubmission();
+    }
+    if (keyName === "backspace" || keyName === "delete") {
+        console.log("It's delete")
+        handleLetterDeletion();
+    }
+});
