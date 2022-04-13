@@ -204,7 +204,8 @@ function checkSubmittedWord(): void {
             if (currentLetter.toLowerCase() === wordToGuess[currentIndex].toLowerCase())
                 finalCardColor = "green"
         }
-        (<HTMLElement>card).classList.toggle(finalCardColor);
+        (<HTMLElement>card).classList.add(finalCardColor);
+        (<HTMLElement>card).classList.remove("active-card");
         (<HTMLElement>keyboardKeys[currentLetter]).classList.add(finalCardColor);
     }
 
@@ -224,6 +225,8 @@ function handleLetterDeletion(): void {
     if (wordGuesses.length < MAX_GUESSES && currentGuess.length > 0) {
         const targetCard = document.querySelector(`[row='${wordGuesses.length}'][col='${currentGuess.length - 1}']`);
         targetCard.innerHTML = "";
+        targetCard.classList.remove("active-card");
+
         currentGuess.pop();
     }
 }
