@@ -3,8 +3,12 @@ const MAX_GUESSES: number = 6;
 const WORD_LENGTH: number = 5;
 const wordGuesses: string[][] = [];
 let currentGuess: Array<string> = [];
+let isKeyboardLocked: boolean = false;
 let gameFinishedFlag: boolean = false;
 const keyboardKeys: Object = {};
+const messageLoading: HTMLElement = document.querySelector("#message-loading");
+const messageInvalidWord: HTMLElement = document.querySelector("#message-invalid-word");
+const messageInvalidLength: HTMLElement = document.querySelector("#message-invalid-length");
 
 const ENGLISH_QWERTY_LAYOUT: Array<string> = [
     "qwertyuiop",
@@ -93,6 +97,7 @@ function assignButtonHandlers(): void {
 function handleKeyPressed(letter: string): void {
 
     // If the game has finished do not allow more attempts
+    if (isKeyboardLocked) return;
     if (gameFinishedFlag) return;
 
     console.log(`${letter} was pressed`);
@@ -104,28 +109,36 @@ function handleKeyPressed(letter: string): void {
         currentGuess.push(letter);
         const targetCard = document.querySelector(`[row='${wordGuesses.length}'][col='${currentGuess.length - 1}']`);
         targetCard.innerHTML = `<span>${letter}</span>`
+        targetCard.classList.add("active-card");
 
     } else
         console.log("Letter submission is not valid, ignoring");
 
     console.log("Current guess is now", currentGuess, " with a length of ", currentGuess.length);
-
 }
 
 function handleWordSubmission(): void {
     console.log("The submit button was pressed")
+    if (isKeyboardLocked) {
+        console.log("The keyboard is locked. Waiting for a request?");
+        return;
+    }
     if (gameFinishedFlag || wordGuesses.length >= MAX_GUESSES) {
         alert("The game has ended")
         return
     }
     if (currentGuess.length !== WORD_LENGTH) {
-        alert("The submitted word length is not valid");
+        // alert("The submitted word length is not valid");
         console.log("The submitted word length is not valid");
+        messageInvalidLength.classList.add("message-show");
+        setTimeout(() => {
+            unlockKeyboard();
+        }, 1000);
         return;
     }
 
     console.log("The submitted word length is valid, checking");
-
+    lockKeyboard();
     const wordToString: string = currentGuess.reduce((a, b) => a + b).toLowerCase();
     console.log(`Sending the request ${wordToString} to test the word`)
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToString}`)
@@ -138,13 +151,30 @@ function handleWordSubmission(): void {
         })
         .catch(() => {
             console.log("The word is in valid, ignoring");
+            messageInvalidWord.classList.add("message-show");
+            setTimeout(() => {
+                unlockKeyboard();
+            }, 1200);
         })
+}
+
+function lockKeyboard(): void {
+    messageLoading.classList.add("message-show");
+    isKeyboardLocked = true;
+}
+
+function unlockKeyboard(): void {
+    messageLoading.classList.remove("message-show");
+    messageInvalidLength.classList.remove("message-show");
+    messageInvalidWord.classList.remove("message-show");
+    isKeyboardLocked = false;
 }
 
 function submitWord(word: Array<string>): void {
     checkSubmittedWord();
     wordGuesses.push(word);
     currentGuess = [];
+    unlockKeyboard();
 }
 
 function checkSubmittedWord(): void {
@@ -187,6 +217,10 @@ function checkSubmittedWord(): void {
 
 function handleLetterDeletion(): void {
     console.log("The delete button was pressed")
+    if (isKeyboardLocked) {
+        console.log("The keyboard is locked. Waiting for a request?");
+        return;
+    };
     if (wordGuesses.length < MAX_GUESSES && currentGuess.length > 0) {
         const targetCard = document.querySelector(`[row='${wordGuesses.length}'][col='${currentGuess.length - 1}']`);
         targetCard.innerHTML = "";

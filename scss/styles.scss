@@ -96,13 +96,51 @@ body {
         @include hover-button-color($light-gray-color);
         cursor: pointer;
     }
-    &.yellow {@include used-card($yellow-color, black);}
-    &.green {@include used-card($green-color, black);}
-    &.dark-gray {@include used-card($dark-gray-color, black);}
 
-    &.yellow:hover {@include hover-button-color($yellow-color);}
-    &.green:hover {@include hover-button-color($green-color);}
-    &.dark-gray:hover {background-color: $dark-gray-color;}
+.message-container {
+    z-index: 1;
+    height: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.message {
+    position: absolute;
+
+    top: -7.5rem;
+
+    padding: 0.5rem 1.5rem;
+    font-size: 1.5rem;
+    text-shadow: #222 1px 1px 3px;
+    border-radius: 2.5rem;
+
+    opacity: 0%;
+    pointer-events: none;
+    width: max-content;
+
+    transition: 0.25s;
+}
+
+
+#message-loading {
+    background-color: rgb(145, 145, 207);
+    z-index: 1;
+}
+
+#message-invalid-word {
+    background-color: rgb(214, 65, 65);
+    z-index: 2;
+}
+
+#message-invalid-length {
+    background-color: #ddcc5f;
+    z-index: 3;
+}
+
+.message-show {
+    opacity: 100%;
 }
 
 
