@@ -1,0 +1,114 @@
+@use "sass:color";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+$green-color: #75b367;
+$yellow-color: #ddcc5f;
+$light-gray-color: #ddd;
+$dark-gray-color: #797c7e;
+
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif; 
+    color: white;
+    background-color: #222;
+
+    display: flex;
+    justify-content: center;
+
+    height: 100%;
+}
+
+.container {
+    // border: red 1px solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min(100%, 800px);
+}
+
+#title {
+    padding-top: 2rem;
+    font-size: 4rem;
+}
+
+.row-container {
+    display: flex;
+    justify-content: center;
+}
+
+@mixin used-card($background-color, $color:white, $blur:0px) {
+    background-color: $background-color;
+    color: $color;
+    text-shadow: #222 0px 1px $blur;
+}
+
+.card {
+    border: #222 2px solid;
+    border-radius: 5%;
+
+    background-color: $light-gray-color;
+    color:black;
+
+    width: 3.5rem;
+    height: 3.5rem;
+    padding: 3px;
+    margin: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+
+    span {font-size: 3rem;}
+
+    &.yellow {@include used-card($yellow-color, white, 3px);}
+    &.green {@include used-card($green-color, white, 3px);}
+    &.dark-gray {@include used-card($dark-gray-color, white, 3px);}
+}
+
+#keyboard {
+    // border: blue 1px solid;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+@mixin hover-button-color($button-color) {
+    $lighter-color: color.scale($button-color, $lightness: 50%);
+    $saturated-color: color.scale($lighter-color, $saturation: 10%);
+    background-color: $saturated-color;
+}
+
+.key {
+    font-size: 2rem;
+    width: 2.5rem;
+    height: 3.5rem;
+    margin-top:10px;
+    background-color: $light-gray-color;
+    border: #444 1px solid;
+    border-radius: 5px;
+    user-select: none;
+
+    &:hover {
+        @include hover-button-color($light-gray-color);
+        cursor: pointer;
+    }
+    &.yellow {@include used-card($yellow-color, black);}
+    &.green {@include used-card($green-color, black);}
+    &.dark-gray {@include used-card($dark-gray-color, black);}
+
+    &.yellow:hover {@include hover-button-color($yellow-color);}
+    &.green:hover {@include hover-button-color($green-color);}
+    &.dark-gray:hover {background-color: $dark-gray-color;}
+}
+
+
+.row-buttons button {
+    font-size: 1.5rem;
+    padding: 5px;
+    margin-top: 1rem;
+    margin-inline: 3px;
+}

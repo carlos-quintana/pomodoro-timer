@@ -4,6 +4,7 @@ const WORD_LENGTH: number = 5;
 const wordGuesses: string[][] = [];
 let currentGuess: Array<string> = [];
 let gameFinishedFlag: boolean = false;
+const keyboardKeys: Object = {};
 
 const ENGLISH_QWERTY_LAYOUT: Array<string> = [
     "qwertyuiop",
@@ -66,6 +67,7 @@ function generateKeyboard(keyboardLayout: Array<string>): void {
             key.classList.add("key");
             key.setAttribute("key", char.toUpperCase());
 
+            keyboardKeys[char.toUpperCase()] = (key)
             rowContainer.appendChild(key);
         }
     }
@@ -148,8 +150,6 @@ function checkSubmittedWord(): void {
     // Get the row where the word is submitted from
     const rows = document.querySelectorAll("#board .row-container");
     const currentRow = rows[wordGuesses.length];
-    // Color the current row
-    (<HTMLElement>currentRow).style.backgroundColor = "red";
 
     // Analyze letter by letter and color each card accordingly
     const cards = [...currentRow.children];
@@ -160,7 +160,7 @@ function checkSubmittedWord(): void {
         const currentLetter: string = (<HTMLElement>card.children[0]).innerText;
 
         // Set the color of the card to an initial value
-        let finalCardColor: string = "gray";
+        let finalCardColor: string = "dark-gray";
         // If the original word contains this letter
         console.log(`Comparing the letter ${currentLetter} to the word to guess "${wordToGuess}"`);
         const letterPosition: number = wordToGuess.toLowerCase().indexOf(currentLetter.toLowerCase());
@@ -170,7 +170,8 @@ function checkSubmittedWord(): void {
             if (letterPosition === currentIndex)
                 finalCardColor = "green"
         }
-        (<HTMLElement>card).style.backgroundColor = finalCardColor;
+        (<HTMLElement>card).classList.toggle(finalCardColor);
+        (<HTMLElement>keyboardKeys[currentLetter]).classList.add(finalCardColor);
     }
 
     // Check if the guess is correct and then end the game 
