@@ -167,7 +167,7 @@ function checkSubmittedWord(): void {
         if (letterPosition > -1) {
             finalCardColor = "yellow";
             // If the original word contains this letter in the same position
-            if (letterPosition === currentIndex)
+            if (currentLetter.toLowerCase() === wordToGuess[currentIndex].toLowerCase())
                 finalCardColor = "green"
         }
         (<HTMLElement>card).classList.toggle(finalCardColor);
