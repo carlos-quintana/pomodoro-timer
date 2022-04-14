@@ -274,6 +274,43 @@ body {
     margin-left: 0.5 * $word-spacing;
 }
 
+#modal-contact-info {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+#modal-contact-icons {
+    font-size: 1.2rem;
+    display:flex;
+    justify-content: space-around;
+    align-items: baseline;
+
+    a {
+        color: white;
+        text-decoration: none;
+        background-color: #222;
+        padding: 2px 8px 2px 12px;
+        border-radius: 15px;
+        transition: background-color 0.25s;
+        user-select: none;
+
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+
+        i {
+            margin-right: 5px;
+        }
+
+        &:hover {
+            @include hover-button-color(#222);
+            cursor: pointer;
+        }
+    }
+
+    margin-bottom: 30px;
+}
+
 #modal-replay {
     font-size: 1.5rem;
     border: none;
