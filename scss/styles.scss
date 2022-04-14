@@ -326,3 +326,60 @@ body {
         cursor: pointer;
     }
 }
+
+@media screen and (max-height: 860px) {
+    #title {
+      padding-top: 0;
+    }
+    .card {
+      width: 3.25rem;
+      height: 3.25rem;
+      margin: 2px;
+    }
+    #keyboard {
+      margin-top: 1.5rem;
+    }
+  }
+  
+  @media screen and (max-height: 800px) {
+    .card {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+    #keyboard {
+      margin-top: 0.5rem;
+    }
+    .key {
+      height: 2.5;
+      margin-top: 5px;
+    }
+  }
+  
+  @media screen and (max-width: 400px) {
+    .key {
+      width: 2rem;
+      font-size: 1.75rem;
+    }
+  }
+  
+  @media screen and (max-height: 675px) {
+    #title {
+      font-size: 2.5rem;
+    }
+    .card {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+    #keyboard {
+      margin-top: 0.5rem;
+    }
+    .key {
+      height: 2.5rem;
+      margin-top: 5px;
+      font-size: 1.75rem;
+    }
+    .row-buttons button {
+      font-size: 1.25rem;
+      margin-top: 0.5rem;
+    }
+  }
