@@ -175,17 +175,17 @@ function submitWord(word: Array<string>): void {
     displaySubmittedWord();
     unlockKeyboard();
     console.log("Checking for ending clauses")
-    // Check if the player has run out of guesses and end the game
-    if (wordGuesses.length === MAX_GUESSES) {
-        gameFinishedFlag = true;
-        openModalLoss();
-        lockKeyboard();
-        return;
-    }
     // Check if the guess is correct and then end the game 
     if (currentGuess.reduce((a, b) => a + b).toLowerCase() === wordToGuess.toLowerCase()) {
         gameFinishedFlag = true;
         openModalWin();
+        lockKeyboard();
+        return;
+    }
+    // Check if the player has run out of guesses and end the game
+    if (wordGuesses.length === MAX_GUESSES) {
+        gameFinishedFlag = true;
+        openModalLoss();
         lockKeyboard();
         return;
     }
