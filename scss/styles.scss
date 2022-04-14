@@ -18,7 +18,8 @@ body {
     background-color: #222;
 
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
 
     height: 100%;
 }
@@ -189,4 +190,102 @@ body {
     margin-top: 1rem;
     margin-inline: 3px;
     border-radius: 15px;
+}
+
+/* MODAL */
+
+
+.modal-backdrop {
+    visibility: hidden;
+    opacity: 0%;
+    transition: opacity 0.3s;
+
+    position: fixed;
+    top: 0px;
+    left: 0px;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #222222dd;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    user-select: none;
+}
+
+.modal-okay {
+    background-color: $green-color;
+}
+
+.modal-dark {
+    background-color: $dark-gray-color;
+}
+
+.modal {
+    background-color: lightgray;
+    user-select: text;
+
+    width: min(450px, 100%);
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    .modal-header {
+        width: 100%;
+        padding-top: 1rem;
+        padding-bottom: 0.5rem;
+        border-radius: 20px 20px 0px 0px;
+
+        font-size: 2rem;
+        flex-grow: 1;
+        text-align: center;
+    }
+
+    .modal-body {
+        font-size: 1.5rem;
+        line-height: 2.2rem;
+        padding-top: 2rem;
+        color: #222;
+
+        p {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+    }
+
+    .modal-buttons {
+        padding-right: 1.5rem;
+        padding-bottom: 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+#modal-word {
+    $word-spacing: 20px;
+    font-size: 3rem;
+    letter-spacing: $word-spacing;
+    margin-left: 0.5 * $word-spacing;
+}
+
+#modal-replay {
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 15px;
+    height: 2.5rem;
+    margin: 0.25rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    &:hover {
+        @include hover-button-color($green-color);
+        color: #666;
+        cursor: pointer;
+    }
 }

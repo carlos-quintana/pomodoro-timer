@@ -10,7 +10,8 @@ body {
   color: white;
   background-color: #222;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   height: 100%;
 }
 
@@ -158,7 +159,98 @@ body {
   padding: 5px;
   margin-top: 1rem;
   margin-inline: 3px;
+  border: none;
   border-radius: 15px;
+}
+
+#deleteButton {
+  background-color: #ddcc5f;
+}
+
+#submitButton {
+  background-color: #75b367;
+}
+
+/* MODAL */
+.modal-backdrop {
+  visibility: hidden;
+  opacity: 0%;
+  transition: opacity 0.3s;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(34, 34, 34, 0.8666666667);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.modal-okay {
+  background-color: #75b367;
+}
+
+.modal-dark {
+  background-color: #797c7e;
+}
+
+.modal {
+  background-color: lightgray;
+  user-select: text;
+  width: min(450px, 100%);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.modal .modal-header {
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+  border-radius: 20px 20px 0px 0px;
+  font-size: 2rem;
+  flex-grow: 1;
+  text-align: center;
+}
+.modal .modal-body {
+  font-size: 1.5rem;
+  line-height: 2.2rem;
+  padding-top: 2rem;
+  color: #222;
+}
+.modal .modal-body p {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.modal .modal-buttons {
+  padding-right: 1.5rem;
+  padding-bottom: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#modal-word {
+  font-size: 3rem;
+  letter-spacing: 20px;
+  margin-left: 10px;
+}
+
+#modal-replay {
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 15px;
+  height: 2.5rem;
+  margin: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+#modal-replay:hover {
+  background-color: #b8ddaf;
+  color: #666;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=styles.css.map */

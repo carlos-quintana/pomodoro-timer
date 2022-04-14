@@ -138,6 +138,7 @@ function handleWordSubmission(): void {
     }
 
     console.log("The submitted word length is valid, checking");
+    messageLoading.classList.add("message-show");
     lockKeyboard();
     const wordToString: string = currentGuess.reduce((a, b) => a + b).toLowerCase();
     console.log(`Sending the request ${wordToString} to test the word`)
@@ -145,21 +146,19 @@ function handleWordSubmission(): void {
         .then(response => {
             console.log(response);
             if (!response.ok)
-                throw Error();
+                throw Error("The word wasn't found in the dictionary");
             console.log("The word is valid, submitting the guess");
             submitWord(currentGuess);
         })
-        .catch(() => {
+        .catch((err) => {
+            console.error(err)
             console.log("The word is in valid, ignoring");
             messageInvalidWord.classList.add("message-show");
-            setTimeout(() => {
-                unlockKeyboard();
-            }, 1200);
+            setTimeout(() => unlockKeyboard(), 1200);
         })
 }
 
 function lockKeyboard(): void {
-    messageLoading.classList.add("message-show");
     isKeyboardLocked = true;
 }
 
@@ -171,27 +170,48 @@ function unlockKeyboard(): void {
 }
 
 function submitWord(word: Array<string>): void {
-    checkSubmittedWord();
+    console.log("> Submitting word")
     wordGuesses.push(word);
-    currentGuess = [];
+    displaySubmittedWord();
     unlockKeyboard();
+    console.log("Checking for ending clauses")
+    // Check if the player has run out of guesses and end the game
+    if (wordGuesses.length === MAX_GUESSES) {
+        gameFinishedFlag = true;
+        openModalLoss();
+        lockKeyboard();
+        return;
+    }
+    // Check if the guess is correct and then end the game 
+    if (currentGuess.reduce((a, b) => a + b).toLowerCase() === wordToGuess.toLowerCase()) {
+        gameFinishedFlag = true;
+        openModalWin();
+        lockKeyboard();
+        return;
+    }
+    currentGuess = [];
 }
 
-function checkSubmittedWord(): void {
-    console.log("Checking submitted word");
+function displaySubmittedWord(): void {
+    console.log("Displaying the submitted word");
 
     // Color the current row accordingly 
     // Get the row where the word is submitted from
     const rows = document.querySelectorAll("#board .row-container");
-    const currentRow = rows[wordGuesses.length];
-
+    console.log("rows",rows)
+    const currentRow = rows[wordGuesses.length-1];
+    console.log("currentRow",currentRow)
     // Analyze letter by letter and color each card accordingly
     const cards = [...currentRow.children];
+    console.log("cards",cards)
     for (let card of cards) {
+        console.log("card",card)
         // Get the index of the card
-        const currentIndex = Number((<HTMLElement>card).getAttribute("col"));
+        const currentIndex: number = Number((<HTMLElement>card).getAttribute("col"));
+        console.log("currentIndex",currentIndex)
         // Get the letter in the card
         const currentLetter: string = (<HTMLElement>card.children[0]).innerText;
+        console.log("currentLetter",currentLetter)
 
         // Set the color of the card to an initial value
         let finalCardColor: string = "dark-gray";
@@ -208,12 +228,7 @@ function checkSubmittedWord(): void {
         (<HTMLElement>card).classList.remove("active-card");
         (<HTMLElement>keyboardKeys[currentLetter]).classList.add(finalCardColor);
     }
-
-    // Check if the guess is correct and then end the game 
-    if (currentGuess.reduce((a, b) => a + b).toLowerCase() === wordToGuess.toLowerCase()) {
-        gameFinishedFlag = true;
-        alert("You've won the game");
-    }
+    console.log("Finished displaying word")
 }
 
 function handleLetterDeletion(): void {
@@ -247,8 +262,9 @@ wordToGuess = getWordToGuess();
  * HANDLE KEYBOARD INPUTS
  */
 document.addEventListener('keydown', (event) => {
-    let keyName:string = event.key.toLowerCase();
-    console.log("A key was pressed",event)
+    let keyName: string = event.key.toLowerCase();
+    console.log("A key was pressed", event)
+    if (gameFinishedFlag) return
     if (keyName.match(/[a-z]/) && keyName.length === 1) {
         console.log("It's a letter")
         handleKeyPressed(keyName.toUpperCase());
@@ -262,3 +278,66 @@ document.addEventListener('keydown', (event) => {
         handleLetterDeletion();
     }
 });
+
+
+/*
+ *  MODAL MANAGEMENT
+ */
+
+function openModalWin() {
+    console.log("Inside open modal win")
+
+    // Retrieve all the modal elements and insert the text
+    const modalTitle: HTMLElement = document.querySelector("#modal-title");
+    modalTitle.innerHTML = "Congratulations";
+    modalTitle.classList.add("modal-okay")
+    const modalP1: HTMLElement = document.querySelector("#modal-p1");
+    modalP1.innerHTML = "You guessed the word:";
+    const modalP2: HTMLElement = document.querySelector("#modal-p2");
+    modalP2.innerHTML = `in ${wordGuesses.length} attempts`;
+    const modalWord: HTMLElement = document.querySelector("#modal-word");
+    modalWord.innerHTML = wordToGuess.toUpperCase();
+
+
+    // Retrieve the replay buttons and assign its event listener
+    const modalOkButton:HTMLElement = document.querySelector("#modal-replay");
+    modalOkButton.addEventListener("click", () => {
+        window.location.reload();
+    });
+    modalOkButton.focus();
+
+    // Make the modal visible
+    const modalBackground: HTMLElement = document.querySelector("#modal-backdrop");
+    modalBackground.style.opacity = "100%";
+    modalBackground.style.visibility = "visible";
+}
+
+
+function openModalLoss() {
+    console.log("Inside open modal loss")
+
+    // Retrieve all the modal elements and insert the text
+    const modalTitle: HTMLElement = document.querySelector("#modal-title");
+    modalTitle.innerHTML = "Game ended";
+    modalTitle.classList.add("modal-dark")
+    const modalP1: HTMLElement = document.querySelector("#modal-p1");
+    modalP1.innerHTML = "The word was:";
+    const modalP2: HTMLElement = document.querySelector("#modal-p2");
+    modalP2.innerHTML = "Try again";
+    const modalWord: HTMLElement = document.querySelector("#modal-word");
+    modalWord.innerHTML = wordToGuess.toUpperCase();
+
+
+    // Retrieve the replay buttons and assign its event listener
+    const modalOkButton:HTMLElement = document.querySelector("#modal-replay");
+    modalOkButton.addEventListener("click", () => {
+        window.location.reload();
+    });
+    modalOkButton.focus();
+
+    // Make the modal visible
+    const modalBackground: HTMLElement = document.querySelector("#modal-backdrop");
+    modalBackground.style.opacity = "100%";
+    modalBackground.style.visibility = "visible";
+}
+
