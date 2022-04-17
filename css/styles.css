@@ -248,6 +248,7 @@ body {
   display: flex;
   justify-content: space-around;
   align-items: baseline;
+  padding-inline: 60px;
   margin-bottom: 30px;
 }
 #modal-contact-icons a {
