@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 * {
+  -webkit-tap-highlight-color: transparent;
   margin: 0;
   padding: 0;
   font-family: "Poppins", sans-serif;
@@ -45,6 +46,7 @@ body {
   align-items: center;
   justify-content: center;
   user-select: none;
+  transition: 0.2s;
 }
 .card span {
   font-size: 3rem;
@@ -165,10 +167,20 @@ body {
 
 #deleteButton {
   background-color: #ddcc5f;
+  transition: background-color 0.15s;
+}
+#deleteButton:hover {
+  background-color: #f0e7ad;
+  cursor: pointer;
 }
 
 #submitButton {
   background-color: #75b367;
+  transition: background-color 0.15s;
+}
+#submitButton:hover {
+  background-color: #b8ddaf;
+  cursor: pointer;
 }
 
 /* MODAL */

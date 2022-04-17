@@ -8,6 +8,7 @@ $dark-gray-color: #797c7e;
 
 
 * {
+    -webkit-tap-highlight-color: transparent;
     margin: 0;
     padding: 0;
     font-family: "Poppins", sans-serif;
@@ -25,7 +26,6 @@ body {
 }
 
 .container {
-    // border: red 1px solid;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -63,6 +63,8 @@ body {
     align-items: center;
     justify-content: center;
     user-select: none;
+
+    transition: 0.2s;
 
     span {
         font-size: 3rem;
@@ -189,17 +191,24 @@ body {
     padding: 5px;
     margin-top: 1rem;
     margin-inline: 3px;
+    border: none;
     border-radius: 15px;
 }
 
 #deleteButton {
+    background-color: $yellow-color;
+    transition: background-color 0.15s;
     &:hover {
+        @include hover-button-color($yellow-color);
         cursor: pointer;
     }
 }
 
 #submitButton {
+    background-color: $green-color;
+    transition: background-color 0.15s;
     &:hover {
+        @include hover-button-color($green-color);
         cursor: pointer;
     }
 }
@@ -298,6 +307,7 @@ body {
     align-items: baseline;
 
     padding-inline: 60px;
+
     a {
         color: white;
         text-decoration: none;
