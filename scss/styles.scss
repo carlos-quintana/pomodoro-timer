@@ -192,6 +192,18 @@ body {
     border-radius: 15px;
 }
 
+#deleteButton {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+#submitButton {
+    &:hover {
+        cursor: pointer;
+    }
+}
+
 /* MODAL */
 
 

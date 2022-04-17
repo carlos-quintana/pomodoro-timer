@@ -130,7 +130,7 @@ function handleWordSubmission() {
         console.error(err);
         console.log("The word is in valid, ignoring");
         messageInvalidWord.classList.add("message-show");
-        setTimeout(() => unlockKeyboard(), 1200);
+        setTimeout(() => unlockKeyboard(), 400);
     });
 }
 function lockKeyboard() {
