@@ -311,7 +311,12 @@ function openModalLoss() {
 /*
  *  GAME START
  */
-generateGameBoard(MAX_GUESSES, WORD_LENGTH);
-generateKeyboard(KEYBOARD_ENGLISH_QWERTY_LAYOUT);
-assignButtonHandlers();
-wordToGuess = getRandomWordToGuess();
+document.addEventListener("DOMContentLoaded", () => {
+    generateGameBoard(MAX_GUESSES, WORD_LENGTH);
+    generateKeyboard(KEYBOARD_ENGLISH_QWERTY_LAYOUT);
+    assignButtonHandlers();
+    wordToGuess = getRandomWordToGuess();
+});
+module.exports = {
+    getRandomWordToGuess
+};
