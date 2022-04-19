@@ -54,7 +54,7 @@ function generateGameBoard(rows: number, cols: number): void {
 function generateKeyboard(keyboardLayout: Array<string>): void {
     const keyboardContainer = document.getElementById("keyboard");
 
-    // Append a new container for each attempt the player has 
+    // Append a new container for each row in the keyboard
     for (let row of keyboardLayout) {
         console.log(`Generating the row ${row}`);
 
@@ -62,7 +62,7 @@ function generateKeyboard(keyboardLayout: Array<string>): void {
         rowContainer.classList.add("row-container");
         keyboardContainer.appendChild(rowContainer);
 
-        // Append as many squares as the number of letters in the word to guess
+        // Append as many keys as the number of letters in the row
         for (let char of row) {
             // console.log(`Generating the key ${char} on the row ${row}`);
 
