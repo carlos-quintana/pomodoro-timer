@@ -3,5 +3,6 @@
         "target": "esnext",
         "rootDir": "./src",
         "outDir": "./dist",
+        "skipLibCheck": true
     }
 }
