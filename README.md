@@ -7,6 +7,8 @@ This application was written in **TypeScript** and stylized with **SASS**.
 
 When an user submits a word it makes a request to the [**Free Dictionary API**](https://dictionaryapi.dev/) to ensure it exists.
 
+This application also contains some unit tests written with **Jest**.
+
 >[Click here to try the live version](https://carlos-quintana.github.io/wordle-game)
 
 This application was made to be showcased in my [Software Developer portfolio](https://carlos-quintana.github.io/).
