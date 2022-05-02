@@ -388,6 +388,8 @@ document.addEventListener("DOMContentLoaded", () => {
     wordToGuess = getRandomWordToGuess();
 });
 
+// Exporting for testing
 module.exports = {
-    getRandomWordToGuess
+    getRandomWordToGuess,
+    compareWords
 }
