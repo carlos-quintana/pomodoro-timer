@@ -175,7 +175,8 @@ function unlockKeyboard() {
 function submitWord(word) {
     console.log("> Submitting word");
     wordGuesses.push(word);
-    displaySubmittedWord();
+    const comparisonResults = compareWords(word, wordToGuess);
+    displaySubmittedWord(currentGuess, comparisonResults);
     unlockKeyboard();
     console.log("Checking for ending clauses");
     // Check if the guess is correct and then end the game 
@@ -194,7 +195,30 @@ function submitWord(word) {
     }
     currentGuess = [];
 }
-function displaySubmittedWord() {
+// This function compares the guessed word to the correct word and returns the correct coloring according to Wordle rules. 0 for gray, 1 for yellow and 2 for green
+function compareWords(guessedWord, correctWord) {
+    console.log(`Comparing ${guessedWord} to ${correctWord}`);
+    const result = [];
+    for (const index in guessedWord) {
+        const currentLetterGuess = guessedWord[index];
+        const positionInCorrectWord = correctWord.toLowerCase().indexOf(currentLetterGuess.toLowerCase());
+        // Case 1: The letter is in the correct position
+        if (positionInCorrectWord === Number(index)) {
+            result.push(2);
+            continue;
+        }
+        // Case 2: The letter is in the word but in another position
+        if (positionInCorrectWord > -1) {
+            result.push(1);
+            continue;
+        }
+        // Case 3: The letter is not in the correct word
+        result.push(0);
+    }
+    console.log(result);
+    return result;
+}
+function displaySubmittedWord(inputtedGuess, comparisonResults) {
     console.log("Displaying the submitted word");
     // Color the current row accordingly 
     // Get the row where the word is submitted from
@@ -205,30 +229,18 @@ function displaySubmittedWord() {
     // Analyze letter by letter and color each card accordingly
     const cards = [...currentRow.children];
     console.log("cards", cards);
-    for (let card of cards) {
-        console.log("card", card);
-        // Get the index of the card
-        const currentIndex = Number(card.getAttribute("col"));
-        console.log("currentIndex", currentIndex);
-        // Get the letter in the card
-        const currentLetter = card.children[0].innerText;
-        console.log("currentLetter", currentLetter);
-        // Set the color of the card to an initial value
-        let finalCardColor = "dark-gray";
-        // If the original word contains this letter
-        console.log(`Comparing the letter ${currentLetter} to the word to guess "${wordToGuess}"`);
-        const letterPosition = wordToGuess.toLowerCase().indexOf(currentLetter.toLowerCase());
-        if (letterPosition > -1) {
-            finalCardColor = "yellow";
-            // If the original word contains this letter in the same position
-            if (currentLetter.toLowerCase() === wordToGuess[currentIndex].toLowerCase())
-                finalCardColor = "green";
-        }
-        card.classList.add(finalCardColor);
-        card.classList.remove("active-card");
-        keyboardKeys[currentLetter].classList.add(finalCardColor);
+    // Go through each card and letter in the inputted word at the same time
+    for (let index in cards) {
+        const currentCard = cards[index];
+        let cardColor = "dark-gray";
+        if (comparisonResults[index] === 1)
+            cardColor = "yellow";
+        if (comparisonResults[index] === 2)
+            cardColor = "green";
+        currentCard.classList.add(cardColor);
+        currentCard.classList.remove("active-card");
+        keyboardKeys[inputtedGuess[index]].classList.add(cardColor);
     }
-    console.log("Finished displaying word");
 }
 function handleLetterDeletion() {
     console.log("The delete button was pressed");
@@ -323,6 +335,8 @@ document.addEventListener("DOMContentLoaded", () => {
     assignButtonHandlers();
     wordToGuess = getRandomWordToGuess();
 });
+// Exporting for testing
 module.exports = {
-    getRandomWordToGuess
+    getRandomWordToGuess,
+    compareWords
 };
