@@ -165,24 +165,31 @@ function handleWordSubmission(): void {
     lockKeyboard();
     const wordToString: string = currentGuess.reduce((a, b) => a + b).toLowerCase();
     console.log(`Sending the request ${wordToString} to test the word`)
-    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${wordToString}`)
-        .then(response => {
-            console.log(response);
-            if (!response.ok)
-                throw Error("Word not found");
+
+    isWordCorrect(wordToString).then(result => {
+        if (result) {
             console.log("The word is valid, submitting the guess");
             submitWord(currentGuess);
-        })
-        .catch((err) => {
-            console.error(err)
-            if (err.message === "Word not found") {
-                console.log("The word is invalid, ignoring");
-                popupMessageInvalidWord.classList.add("message-show");
-                setTimeout(() => unlockKeyboard(), 400);
-            } else {
-                console.log("An error ocurred", err);
-            }
-        })
+        } else {
+            console.log("The word is invalid, ignoring");
+            popupMessageInvalidWord.classList.add("message-show");
+            setTimeout(() => unlockKeyboard(), 400);
+        }
+    }).catch(error => console.error(error))
+}
+
+async function isWordCorrect(word: string) {
+    try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+        if (!response.ok)
+            throw Error("Word not found");
+        return true
+    } catch (error) {
+        if (error.message === "Word not found")
+            return false
+        else
+            return error
+    }
 }
 
 function lockKeyboard(): void {
